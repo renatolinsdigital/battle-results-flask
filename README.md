@@ -93,7 +93,7 @@ Example of a JSON body for `PATCH` requests (Updating fields of existing entries
 
 ```json
 {
-  "winnerName": "Player 2"
+  "winnerName": "Player 1"
 }
 ```
 
