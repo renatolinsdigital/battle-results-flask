@@ -8,18 +8,16 @@ from db_models.battle_entry import BattleEntry
 from config.database import db, configure_local_database
 
 
-# Create a Flask application instance with a secret
+# Creates and configures the Flask application
+
+
 app = Flask(__name__)
 app.secret_key = FLASK_SECRET_KEY
-
-# Configure the database
 configure_local_database(app)
-
-# Attach assets and static files
 register_assets_for(app)
-
-# Initialize the Flask application with the database
 db.init_app(app)
+
+# Server side UI
 
 
 @app.route('/')
@@ -30,83 +28,115 @@ def index():
     # Render the index.html template with the entries data
     return render_template('index.html', entries=entries)
 
+# Routes
 
-@app.route('/entries', methods=['GET', 'POST', 'PUT'])
-@cross_origin()
+
+@app.route('/entries', methods=['GET', 'POST'])
 def entries():
     if request.method == 'GET':
-        # Query the database for all entries
-        entries = BattleEntry.query.all()
-
-        # Convert the entries to a list of dictionaries
-        entries_list = []
-        for entry in entries:
-            entry_dict = entry.to_json()
-            entries_list.append(entry_dict)
-
-        # Return the entries as JSON
-        return jsonify({'entries': entries_list})
+        return get_all_entries()
 
     elif request.method == 'POST':
-        req_json = request.get_json()
+        return create_entry()
 
-        has_required_fields = (
-            'gameTag' in req_json
-            and 'player1Name' in req_json
-            and 'player2Name' in req_json
-            and 'winnerName' in req_json
-            and 'finishedDate' in req_json
-        )
-        if not has_required_fields:
-            return abort(BAD_REQUEST)
 
-        # Create a new BattleEntry object from the JSON data
-        battle_entry = BattleEntry.from_json(req_json)
+@app.route('/entry/<int:entry_id>', methods=['GET', 'PATCH', 'DELETE'])
+def entry(entry_id):
+    if request.method == 'GET':
+        return get_entry(entry_id)
 
-        # Save the new BattleEntry object to the database
-        db.session.add(battle_entry)
-        db.session.commit()
+    elif request.method == 'PATCH':
+        return partial_update_entry(entry_id)
 
-        # Return a success response
-        return jsonify({'message': f'Battle entry created with id {battle_entry.id}'}), CREATED
+    elif request.method == 'DELETE':
+        return delete_entry(entry_id)
 
-    elif request.method == 'PUT':
-        req_json = request.get_json()
+# Controllers
 
-        # Check if 'id' field is present in the JSON data
-        if 'id' not in req_json:
-            return abort(BAD_REQUEST)
 
-        # Get the ID of the entry to update
-        entry_id = req_json['id']
+def get_all_entries():
+    entries = BattleEntry.query.all()
 
-        # Query the database for the entry with the given ID
-        entry_to_update = BattleEntry.query.get(entry_id)
+    entries_list = []
+    for entry in entries:
+        entry_dict = entry.to_json()
+        entries_list.append(entry_dict)
 
-        # If the entry does not exist, return 404 Not Found
-        if entry_to_update is None:
-            return abort(NOT_FOUND)
+    return jsonify({'entries': entries_list})
 
-        # Update the entry with the new data (current value is kept by default if requisition is not informing a new one)
-        entry_to_update.game_tag = req_json.get(
-            'gameTag', entry_to_update.game_tag)
-        entry_to_update.player_1_name = req_json.get(
-            'player1Name', entry_to_update.player_1_name)
-        entry_to_update.player_2_name = req_json.get(
-            'player2Name', entry_to_update.player_2_name)
-        entry_to_update.winner_name = req_json.get(
-            'winnerName', entry_to_update.winner_name)
+
+def create_entry():
+    req_json = request.get_json()
+
+    has_required_fields = (
+        'gameTag' in req_json
+        and 'player1Name' in req_json
+        and 'player2Name' in req_json
+        and 'winnerName' in req_json
+    )
+    if not has_required_fields or \
+            req_json['player1Name'] == req_json['player2Name'] or \
+            req_json['winnerName'] not in [req_json['player1Name'], req_json['player2Name']]:
+        return abort(BAD_REQUEST, description="Inform different player names and ensure that the winner's name matches one of the player's names")
+
+    battle_entry = BattleEntry.from_json(req_json)
+
+    db.session.add(battle_entry)
+    db.session.commit()
+
+    return jsonify({'message': f'Battle entry created with id {battle_entry.id}'}), CREATED
+
+
+def get_entry(entry_id):
+    entry = BattleEntry.query.get(entry_id)
+    if entry is None:
+        return abort(NOT_FOUND, description='Entry not found')
+
+    entry_dict = entry.to_json()
+    return jsonify({'entry': entry_dict})
+
+
+def partial_update_entry(entry_id):
+    req_json = request.get_json()
+    entry_to_update = BattleEntry.query.get(entry_id)
+
+    if entry_to_update is None:
+        return abort(NOT_FOUND, description='Entry not found')
+
+    if 'gameTag' in req_json:
+        return abort(BAD_REQUEST, description='gameTag cannot be updated')
+
+    if 'player1Name' in req_json:
+        entry_to_update.player_1_name = req_json['player1Name']
+    if 'player2Name' in req_json:
+        entry_to_update.player_2_name = req_json['player2Name']
+    if 'winnerName' in req_json:
+        winner_name = req_json['winnerName']
+        if winner_name == entry_to_update.player_1_name or winner_name == entry_to_update.player_2_name:
+            entry_to_update.winner_name = winner_name
+        else:
+            return abort(BAD_REQUEST, description='Winner name must be equal to player 1 or player 2 name')
+
+    if 'finishedDate' in req_json:
         entry_to_update.finished_date = datetime.strptime(
-            req_json.get('finishedDate'), '%Y-%m-%d %H:%M:%S')
+            req_json['finishedDate'], '%Y-%m-%d %H:%M:%S')
 
-        # Commit the changes to the database
-        db.session.commit()
+    db.session.commit()
 
-        # Return a success response
-        return jsonify({'message': f'Battle entry with id {entry_id} updated'}), OK
+    return jsonify({'message': f'Battle entry with id {entry_id} has been updated'}), OK
 
-    else:
-        return abort(BAD_REQUEST)
+
+def delete_entry(entry_id):
+    entry_to_delete = BattleEntry.query.get(entry_id)
+    if entry_to_delete is None:
+        return abort(NOT_FOUND)
+
+    db.session.delete(entry_to_delete)
+    db.session.commit()
+
+    return jsonify({'message': f'Battle entry with id {entry_id} has been deleted'}), OK
+
+# Starts the application
 
 
 if __name__ == '__main__':

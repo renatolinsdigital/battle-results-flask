@@ -4,7 +4,7 @@
 
 This project aims to develop a REST API using Flask + SQLAlchemy for managing game battle results, displaying entries from newest to oldest. The goal is to integrate backend functionality into my game projects and highlight Python code in my portfolio.
 
-# Technologies used
+### Technologies used
 
 * Sass for styling
 * SQLAlchemy as the ORM
@@ -13,7 +13,7 @@ This project aims to develop a REST API using Flask + SQLAlchemy for managing ga
 * Flask as the backend web framework
 * Jinja2 as a template engine for back-end UI rendering
 
-# How it looks after adding a few battle entries
+### How it looks after adding a few battle entries
 
 ![Print](prints/print.png)
 
@@ -47,45 +47,53 @@ Once you have completed your coding session, you can stop the development server
 
 ---
 
-## Endpoints and params:
+# The API
 
-- **GET - /entries**: Brings total number of battle entries
+### Plural endpoints:
+
+- **GET - /entries**: Retrieves a list of all finished battle entries.
   
-- **GET - /entries/page={page_number}**: Brings battle results for a given page. First pages show last entries
+- **POST - /entries**: Enables the creation of a new battle entry using a JSON object in the format of the BattleEntry model. Requires unique player names and specifies that the winner's name must match one of the players' names. This request needs a JSON body.
 
-- **GET - /entries/id={id}**: Bring a specific battle result for a given id
+### Singular endpoints:
 
-- **GET - /entries/between/start={start_date}&end={end_date}**: Bring battle results for a given data range
+- **GET - /entry/{id}**: Allows retrieving a specific entry based on the ID provided in the endpoint. For instance, accessing __/entry/1__ with `GET` will bring the first battle result.
 
-- **GET - /entries/gametag={game_tag}**: Brings battle results for a given game tags, as this application can be used for many games.
+- **DELETE - /entry/{id}**: Allows deleting a specific entry based on the ID provided in the endpoint. For instance, accessing __/entry/1__ with `DELETE` will delete the first battle result.
 
-- **POST - /entries**: Allows the creation of a new battle entry once a JSON (in Battle entry model format) is provided. Player names must be unique within each game tag
+- **PATCH - /entry/{id}**: Enables updating any field of a battle entry. If names are being updated, the winner's name must be equal to one of the player's names. The only field that cannot be updated is `gameTag` because it represents the specific game in which the battle occurred. This request needs a JSON body.
 
-- **PUT - /entries/id={id}**: Allows updating winner´s player name of a specific battle entry. Useful if one wants to keep the same name across different games
+### Models and related JSON body for requests
 
-## Models
-
-### Battle entry model
+Battle entry model
 
 ```js
   {
-    gameTag: string,
-    player1Name: string,
-    player2Name: string,
-    winnerName: string,
-    finishedDate: string // YYYY-MM-DD HH:MM:SS (ISO 8601 standard)
+    id: number, // Auto-generated
+    gameTag: string, // required
+    player1Name: string, // required
+    player2Name: string, // required
+    winnerName: string, // required
+    finishedDate: string // "YYYY-MM-DD HH:MM:SS" (ISO 8601 standard) - Optional
   }
 ```
 
-### Battle entry JSON example (You can send this JSON using Insomnia with a POST request for testing the API)
+Example of a JSON body for POST requests (Creating a new battle entry)
 
 ```json
 {
   "gameTag": "dweeb_fight",
   "player1Name": "Player 1",
   "player2Name": "Player 2",
-  "winnerName": "Player 2",
-  "finishedDate": "2024-03-25 10:30:50"
+  "winnerName": "Player 2"
+}
+```
+
+Example of a JSON body for PATCH requests (Updating fields of existing entries)
+
+```json
+{
+  "winnerName": "Player 2"
 }
 ```
 
