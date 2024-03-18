@@ -1,0 +1,38 @@
+main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 400px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--primary-default);
+  color: var(--white);
+  padding: 15px;
+}
+
+footer {
+  display: flex;
+  background-color: var(--primary-default);
+}
+
+.app-hero {
+  display: flex;
+  justify-content: center;
+  background-color: var(--white-snow);
+  color: var(--neutral-ultra-dark);
+  font-size: var(--font-size-biggest);
+  font-weight: bold;
+  padding: 40px;
+  text-transform: uppercase;
+}
+
+.footer-text {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: 20px;
+  color: var(--white);
+}

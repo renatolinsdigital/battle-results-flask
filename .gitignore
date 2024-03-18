@@ -1,0 +1,7 @@
+# Project´s ignores
+data
+instance
+.env
+static/gen
+__pycache__/
+static/.webassets-cache

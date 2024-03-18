@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block app_title %}Battle Results{% endblock %}
+
+{% block app_header_content %}
+<div>
+  <span>Battle Results</span>
+  <span>v 1.0</span>
+</div>
+{% endblock %}
+
+{% block app_main_content %}
+<header class="app-hero">
+  <h1>Latest battle results</h1>
+</header>
+<div class="container entries-container">
+  {% for entry in entries %}
+  <div class="battle-entry-container">
+      <div class="player-info-container">
+          <span class="player-name">{{ entry.player_1_name }}</span>
+          <span class="player-status {% if entry.winner_name == entry.player_1_name %}winner{% else %}looser{% endif %}">
+              {% if entry.winner_name == entry.player_1_name %}Winner{% else %}Looser{% endif %}
+          </span>
+      </div>
+      <div class="battle-info-container">
+          <span class="versus">VS</span>
+          <span class="date-time-info">{{ entry.finished_date.strftime('%d/%m/%Y') }}</span>
+          <span class="date-time-info">{{ entry.finished_date.strftime('%H:%M:%S') }}</span>
+      </div>
+      <div class="player-info-container">
+          <span class="player-name">{{ entry.player_2_name }}</span>
+          <span class="player-status {% if entry.winner_name == entry.player_2_name %}winner{% else %}looser{% endif %}">
+              {% if entry.winner_name == entry.player_2_name %}Winner{% else %}Looser{% endif %}
+          </span>
+      </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block app_footer_content %}
+<div class="container">
+  <p class="footer-text">
+    Developed by
+    <a href="https://www.linkedin.com/in/renatolinsdigital" alt="Renato Lins Linkedin" target="_blank">Renato Lins</a>
+  </p>
+</div>
+{% endblock %}

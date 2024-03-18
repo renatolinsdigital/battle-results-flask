@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    {% block app_title %}{% endblock %}
+  </title>
+  {% assets "bundle_css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}" />
+  {% endassets %}
+</head>
+
+<body>
+  <header class="app-header">
+    {% block app_header_content %}{% endblock %}
+  </header>
+  <main>
+    {% block app_main_content %}{% endblock %}
+  </main>
+  <footer>
+    {% block app_footer_content %}{% endblock %}
+  </footer>
+  {% assets "bundle_js" %}
+  <script src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+</body>
+
+</html>

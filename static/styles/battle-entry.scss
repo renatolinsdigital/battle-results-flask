@@ -1,0 +1,79 @@
+.battle-entry-container {
+  display: flex;
+  flex: 1;
+  background-color: var(--white-snow);
+  border-radius: 6px;
+  box-shadow: var(--default-box-shadow);
+  cursor: pointer;
+  border: 1px solid var(--default-transparent);
+  transition: all .2s ease;
+  margin: 10px 0;
+  &:hover {
+    background-color: var(--neutral-ultra-light);
+    border: 1px solid var(--neutral-light);
+  }
+}
+
+.player-info-container, 
+.battle-info-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-info-container {
+  flex: 1;
+}
+
+.player-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-dark);
+  padding: 20px 15px 15px;
+  font-size: var(--font-size-bigger);
+  font-weight: bold;
+}
+
+.battle-info-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 15px;
+   span {
+     text-align: center;
+   }
+}
+
+.versus {
+  font-size: var(--font-size-big);
+  color: var(--primary-dark);
+  font-style: italic;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.date-time-info {
+  font-size: var(--font-size-smaller);
+  color: var(--neutral-light);
+}
+
+.player-status {
+  display: flex;
+  justify-content: center;
+  font-size: var(--font-size-small);
+  padding: 0 5px 15px;
+  font-weight: bold;
+
+  &.winner {
+    color: var(--winner);
+  }
+
+  &.looser {
+    color: var(--looser);
+  }
+}
+
+.entries-container {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 15px;
+}
