@@ -47,23 +47,21 @@ Once you have completed your coding session, you can stop the development server
 
 ---
 
-# The API
+# API Endpoints and Models
 
-### Plural endpoints:
+### The Endpoint /entries:
 
 - **GET - /entries**: Retrieves a list of all finished battle entries.
   
 - **POST - /entries**: Enables the creation of a new battle entry using a JSON object in the format of the `BattleEntry` model. Requires unique player names and specifies that the winner's name must match one of the players' names. This request needs a JSON body.
 
-### Singular endpoints:
+- **GET - /entries/:entryId**: Allows retrieving a specific entry based on the ID provided in the endpoint. For instance, accessing __/entries/1__ will bring the first battle result.
 
-- **GET - /entry/{id}**: Allows retrieving a specific entry based on the ID provided in the endpoint. For instance, accessing __/entry/1__ with `GET` will bring the first battle result.
+- **DELETE - /entries/:entryId**: Allows deleting a specific entry based on the ID provided in the endpoint. For instance, accessing __/entries/1__ delete the first battle result.
 
-- **DELETE - /entry/{id}**: Allows deleting a specific entry based on the ID provided in the endpoint. For instance, accessing __/entry/1__ with `DELETE` will delete the first battle result.
+- **PATCH - /entries/:entryId**: Enables updating any field of a battle entry. If names are being updated, the winner's name must be equal to one of the player's names. The only field that cannot be updated is `gameTag` once it represents the specific game in which the battle occurred. This request needs a JSON body as well.
 
-- **PATCH - /entry/{id}**: Enables updating any field of a battle entry. If names are being updated, the winner's name must be equal to one of the player's names. The only field that cannot be updated is `gameTag` once it represents the specific game in which the battle occurred. This request needs a JSON body as well.
-
-### Models and related JSON body for requests
+### The model related to battle result entries
 
 Battle Entry model
 
@@ -77,6 +75,8 @@ Battle Entry model
     finishedDate: string // "YYYY-MM-DD HH:MM:SS" (ISO 8601 standard) - Optional
   }
 ```
+
+### Data to be received by the /entries endpoint
 
 Example of a JSON body for `POST` requests (Creating a new battle entry)
 

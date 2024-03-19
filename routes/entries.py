@@ -14,7 +14,7 @@ def entries():
         return create_entry()
 
 
-@entries_bp.route('/entry/<int:entry_id>', methods=['GET', 'PATCH', 'DELETE'])
+@entries_bp.route('/entries/<int:entry_id>', methods=['GET', 'PATCH', 'DELETE'])
 def entry(entry_id):
     if request.method == 'GET':
         return get_entry(entry_id)
