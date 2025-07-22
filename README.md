@@ -12,6 +12,7 @@ This project aims to develop a REST API using Flask + SQLAlchemy for managing ga
 * Python as the backend language
 * Flask as the backend web framework
 * Jinja2 as a template engine for back-end UI rendering
+* Swagger UI for API documentation
 
 ### How it looks after adding a few battle entries
 
@@ -19,81 +20,74 @@ This project aims to develop a REST API using Flask + SQLAlchemy for managing ga
 
 ---
 
-# Running and coding in this project
+## Quick Start
 
-* Create a `.env` file in the project's root folder. For development purposes, it will work fine if you fill it like this:
+1. **Set up environment variables**
+   Create a `.env` file with required configuration (see [Setup Guide](docs/setup.md))
 
-  ```js
-  FLASK_APP=app.py
-  FLASK_RUN_HOST=localhost
-  FLASK_RUN_PORT=8080
-  FLASK_ENV=development
-  FLASK_DEBUG=True
-  FLASK_SECRET_KEY=my_flask_app_security_key
-  LOCAL_DATABASE_PATH=data
-  ```
+2. **Install dependencies**
+   ```bash
+   pip install pipenv
+   pipenv install
+   pipenv shell
+   ```
 
-* Have SQLite installed on your machine. You can check the official SQLite website and follow the installation instructions.
-* Install Pipenv on your machine with `pip install pipenv`.
-* Create a virtual environment with `pipenv --python 3`.
-* Activate/reactivate a virtual environment associated to this project with `pipenv shell`.
-* Confirm virtual environment creation path with `pipenv --venv`.
-* Install project's dependencies using `pipenv install`.
-* Run this project with `python app.py` to make sure the data base Path + URI are going to be resolved. After that, you can run this app with `flask run`.
-* Open your browser and check the project running with `localhost:8080`.
-* Make desired updates as you wish, this project is fully open source.
+3. **Run the application**
+   ```bash
+   python app.py
+   ```
 
-Once you have completed your coding session, you can stop the development server by pressing `CTRL + C` and exit the virtual environment by using the `exit` command.
+4. **Access the application**
+   - Web interface: http://localhost:8080
+   - API documentation: http://localhost:8080/api/docs
 
----
+## Documentation
 
-# API Endpoints and Models
+For complete documentation, please refer to the [`docs`](docs) folder:
 
-### The Endpoint /entries:
+- [Setup Guide](docs/setup.md) - Detailed instructions for setting up the project
+- [API Documentation](docs/api.md) - Comprehensive API documentation
+- [Deployment Guide](docs/deployment.md) - Options for deploying the application
+- [Best Practices](docs/best_practices.md) - Recommended practices for development
 
-- **GET - /entries**: Retrieves a list of all finished battle entries.
-  
-- **POST - /entries**: Enables the creation of a new battle entry using a JSON object in the format of the `BattleEntry` model. Requires unique player names and specifies that the winner's name must match one of the players' names. This request needs a JSON body.
+## Testing
 
-- **GET - /entries/:entryId**: Allows retrieving a specific entry based on the ID provided in the endpoint. For instance, accessing __/entries/1__ will bring the first battle result.
+Run the test suite with:
 
-- **DELETE - /entries/:entryId**: Allows deleting a specific entry based on the ID provided in the endpoint. For instance, accessing __/entries/1__ delete the first battle result.
-
-- **PATCH - /entries/:entryId**: Enables updating any field of a battle entry. If names are being updated, the winner's name must be equal to one of the player's names. The only field that cannot be updated is `gameTag` once it represents the specific game in which the battle occurred. This request needs a JSON body as well.
-
-### The model related to battle result entries
-
-Battle Entry model
-
-```js
-  {
-    id: number, // Auto-generated
-    gameTag: string, // required
-    player1Name: string, // required
-    player2Name: string, // required
-    winnerName: string, // required
-    finishedDate: string // "YYYY-MM-DD HH:MM:SS" (ISO 8601 standard) - Optional
-  }
+```bash
+python run_tests.py
 ```
 
-### Data to be received by the /entries endpoint
+For test coverage reporting:
 
-Example of a JSON body for `POST` requests (Creating a new battle entry)
-
-```json
-{
-  "gameTag": "dweeb_fight",
-  "player1Name": "Player 1",
-  "player2Name": "Player 2",
-  "winnerName": "Player 2"
-}
+```bash
+python run_tests.py --coverage
 ```
 
-Example of a JSON body for `PATCH` requests (Updating fields of existing entries)
+## License
 
-```json
-{
-  "winnerName": "Player 1"
-}
+This project is open source and available under the terms of the license included in the repository.
+
+## API Overview
+
+The API provides endpoints for managing battle entries:
+
+- **GET /entries** - List all battle entries
+- **POST /entries** - Create a new battle entry
+- **GET /entries/{id}** - Get a specific battle entry
+- **PATCH /entries/{id}** - Update a battle entry
+- **DELETE /entries/{id}** - Delete a battle entry
+
+For detailed API documentation, see the [API Documentation](docs/api.md) or access the Swagger UI at `/api/docs` when the application is running.
+
+## Docker Support
+
+The application includes Docker support for easy deployment:
+
+```bash
+# Build and start with Docker Compose
+docker-compose up -d
 ```
+
+For more deployment options, see the [Deployment Guide](docs/deployment.md).
 

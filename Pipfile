@@ -12,9 +12,15 @@ jsmin = "*"
 python-dotenv = "*"
 cssmin = "*"
 libsass = "*"
+flask-swagger-ui = "*"
+apispec = "*"
+marshmallow = "*"
 
 [dev-packages]
 autopep8 = "*"
+pytest = "*"
+pytest-flask = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.12"
