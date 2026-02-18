@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from config.database import db
 
 
@@ -8,7 +8,8 @@ class BattleEntry(db.Model):
     player_1_name = db.Column(db.String(100), nullable=False)
     player_2_name = db.Column(db.String(100), nullable=False)
     winner_name = db.Column(db.String(100), nullable=False)
-    finished_date = db.Column(db.DateTime, default=datetime.now)
+    finished_date = db.Column(
+        db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def __init__(self, game_tag, player_1_name, player_2_name, winner_name):
         self.game_tag = game_tag

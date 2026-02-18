@@ -20,5 +20,6 @@ def configure_local_database(app: Flask):
     db_path.mkdir(parents=True, exist_ok=True)
 
     db_uri: str = f'sqlite:///{db_path}/results.db'  # Create database URI
-    # Configure SQLAlchemy database URI
+    # Configure SQLAlchemy
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

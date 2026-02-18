@@ -1,12 +1,18 @@
 
-from flask import Flask, send_from_directory
-from config.database import db
+import logging
+from flask import Flask
+from config.database import db, configure_local_database
 from routes.index import index_bp
 from routes.entries import entries_bp
-from config.database import db, configure_local_database
 from config.assets_registering import register_assets_for
 from config.flask import FLASK_RUN_PORT, FLASK_RUN_HOST, FLASK_DEBUG, FLASK_SECRET_KEY
 from flask_swagger_ui import get_swaggerui_blueprint
+
+logging.basicConfig(
+    level=logging.DEBUG if FLASK_DEBUG else logging.INFO,
+    format='%(asctime)s %(levelname)s %(name)s: %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+)
 
 # Setting up the app
 app = Flask(__name__)

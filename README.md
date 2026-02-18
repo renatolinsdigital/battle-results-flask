@@ -1,93 +1,110 @@
-# Battle Results - Made with Flask
+# Battle Results Flask
 
-### About this project
+A REST API and minimal web UI for tracking game battle results, built with Flask and SQLAlchemy. Entries are displayed from newest to oldest.
 
-This project aims to develop a REST API using Flask + SQLAlchemy for managing game battle results, displaying entries from newest to oldest. The goal is to integrate backend functionality into my game projects and highlight Python code in my portfolio.
+## Stack
 
-### Technologies used
+| Layer | Technology |
+|---|---|
+| Backend | Python 3.12, Flask |
+| ORM | SQLAlchemy (SQLite) |
+| Templating | Jinja2 |
+| Styling | Sass (compiled via Flask-Assets) |
+| API Docs | Swagger UI (`/api/docs`) |
 
-* Sass for styling
-* SQLAlchemy as the ORM
-* SQLite as the database
-* Python as the backend language
-* Flask as the backend web framework
-* Jinja2 as a template engine for back-end UI rendering
-* Swagger UI for API documentation
+## API Endpoints
 
-### How it looks after adding a few battle entries
+| Method | Path | Description |
+|---|---|---|
+| GET | `/entries` | List all battle entries (newest first) |
+| POST | `/entries` | Create a battle entry |
+| GET | `/entries/<id>` | Get a single entry |
+| PATCH | `/entries/<id>` | Partially update an entry |
+| DELETE | `/entries/<id>` | Delete an entry |
 
-![Print](prints/print.png)
+### POST / PATCH payload fields
 
----
+| Field | Type | Notes |
+|---|---|---|
+| `gameTag` | string | max 100 chars; immutable after creation |
+| `player1Name` | string | max 100 chars |
+| `player2Name` | string | max 100 chars; must differ from `player1Name` |
+| `winnerName` | string | must equal `player1Name` or `player2Name` |
+| `finishedDate` | string | PATCH only; format `YYYY-MM-DD HH:MM:SS` |
 
 ## Quick Start
 
-1. **Set up environment variables**
-   Create a `.env` file with required configuration (see [Setup Guide](docs/setup.md))
+**1. Configure environment**
 
-2. **Install dependencies**
-   ```bash
-   pip install pipenv
-   pipenv install
-   pipenv shell
-   ```
+```bash
+cp .env.example .env
+# Edit .env and set FLASK_SECRET_KEY to a strong random value
+```
 
-3. **Run the application**
-   ```bash
-   python app.py
-   ```
+Generate a secret key:
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
 
-4. **Access the application**
-   - Web interface: http://localhost:8080
-   - API documentation: http://localhost:8080/api/docs
+**2. Install dependencies**
 
-## Documentation
+```bash
+pip install pipenv
+pipenv install
+pipenv shell
+```
 
-For complete documentation, please refer to the [`docs`](docs) folder:
+**3. Run**
 
-- [Setup Guide](docs/setup.md) - Detailed instructions for setting up the project
-- [API Documentation](docs/api.md) - Comprehensive API documentation
-- [Deployment Guide](docs/deployment.md) - Options for deploying the application
-- [Best Practices](docs/best_practices.md) - Recommended practices for development
+```bash
+python app.py
+```
+
+- Web UI: http://localhost:8080
+- API docs: http://localhost:8080/api/docs
+
+## Docker
+
+```bash
+# Set FLASK_SECRET_KEY before starting
+export FLASK_SECRET_KEY=$(python -c "import secrets; print(secrets.token_hex(32))")
+docker compose up --build
+```
 
 ## Testing
 
-Run the test suite with:
-
 ```bash
+# Run tests
 python run_tests.py
+
+# Run tests with coverage report
+python run_tests.py --coverage
 ```
 
-For test coverage reporting:
+## Project Structure
 
-```bash
-python run_tests.py --coverage
+```
+app.py                  # Application entry point
+config/
+  flask.py              # Flask configuration (env vars)
+  database.py           # SQLAlchemy setup
+  assets_registering.py # JS/CSS bundle configuration
+  status_codes.py       # HTTP status code constants
+routes/
+  index.py              # Web UI route (/)
+  entries.py            # API routes (/entries)
+controllers/
+  entries.py            # Business logic for entries
+db_models/
+  battle_entry.py       # BattleEntry ORM model
+tests/
+  test_api.py           # API unit tests
+  test_views.py         # View tests
+static/
+  swagger.json          # OpenAPI spec
+docs/                   # Extended documentation
 ```
 
 ## License
 
-This project is open source and available under the terms of the license included in the repository.
-
-## API Overview
-
-The API provides endpoints for managing battle entries:
-
-- **GET /entries** - List all battle entries
-- **POST /entries** - Create a new battle entry
-- **GET /entries/{id}** - Get a specific battle entry
-- **PATCH /entries/{id}** - Update a battle entry
-- **DELETE /entries/{id}** - Delete a battle entry
-
-For detailed API documentation, see the [API Documentation](docs/api.md) or access the Swagger UI at `/api/docs` when the application is running.
-
-## Docker Support
-
-The application includes Docker support for easy deployment:
-
-```bash
-# Build and start with Docker Compose
-docker-compose up -d
-```
-
-For more deployment options, see the [Deployment Guide](docs/deployment.md).
-
+See [LICENSE](LICENSE).
