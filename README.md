@@ -2,6 +2,8 @@
 
 A REST API and minimal web UI for tracking game battle results, built with Flask and SQLAlchemy. Entries are displayed from newest to oldest.
 
+![Application Screenshot](print/print.png)
+
 ## Stack
 
 | Layer | Technology |
