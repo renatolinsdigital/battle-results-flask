@@ -5,3 +5,12 @@ instance
 static/gen
 __pycache__/
 static/.webassets-cache
+
+# Virtual environments
+venv/
+venv-*/
+.venv/
+.venv-*/
+env/
+.env/
+ENV/
