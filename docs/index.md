@@ -13,18 +13,24 @@ Welcome to the Battle Results Flask application documentation. This documentatio
    - Request and response formats
    - Example usage
 
-3. [Deployment Guide](deployment.md)
+3. [Docker Guide](docker.md)
+   - How the project is containerized (Dockerfile and docker-compose.yml explained)
+   - All Docker and Compose commands
+   - Environment variables and data persistence
+   - Production considerations and troubleshooting
+
+4. [Deployment Guide](deployment.md)
    - Options for deploying the application
    - Considerations for production environments
-   - Docker deployment
+   - Docker deployment (summary — see Docker Guide for details)
 
-4. [Best Practices](best_practices.md)
+5. [Best Practices](best_practices.md)
    - Code organization
    - Development workflows
    - Security considerations
    - Database management
 
-5. [Troubleshooting](git_venv_windows_fix.md)
+6. [Troubleshooting](git_venv_windows_fix.md)
    - Fixing Git issues on Windows
    - Virtual environment troubleshooting
 

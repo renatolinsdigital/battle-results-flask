@@ -85,41 +85,22 @@ This document outlines various options for deploying the Battle Results Flask ap
 
 ### 4. Docker Container
 
-You can containerize your application using Docker for easy deployment across various platforms.
+The project already includes a production-ready `Dockerfile` and `docker-compose.yml`. Refer to the dedicated **[Docker Guide](docker.md)** for full instructions.
 
-**Advantages:**
-- Consistent environment across all deployments
-- Easy scaling with container orchestration tools
-- Isolation from the host system
+**Summary of advantages:**
+- Consistent environment across all deployments.
+- No local Python installation required on the host.
+- Data is persisted via a host-mounted volume (`./data`).
+- Runs as a non-root user for improved security.
 
-**Steps to containerize:**
-1. Create a `Dockerfile` in your project root:
-   ```Dockerfile
-   FROM python:3.9-slim
+**Quick start:**
 
-   WORKDIR /app
+```bash
+export FLASK_SECRET_KEY=$(python -c "import secrets; print(secrets.token_hex(32))")
+docker compose up --build -d
+```
 
-   COPY Pipfile Pipfile.lock ./
-   RUN pip install pipenv && pipenv install --system --deploy
-
-   COPY . .
-
-   ENV FLASK_APP=app.py
-   ENV FLASK_RUN_HOST=0.0.0.0
-   ENV FLASK_RUN_PORT=8080
-
-   EXPOSE 8080
-
-   CMD ["python", "app.py"]
-   ```
-2. Build the Docker image:
-   ```bash
-   docker build -t battle-results-flask .
-   ```
-3. Run the container:
-   ```bash
-   docker run -p 8080:8080 battle-results-flask
-   ```
+See [docker.md](docker.md) for all commands, environment variables, production setup (Gunicorn, reverse proxy, secrets management), and troubleshooting.
 
 ## Database Considerations
 
