@@ -8,29 +8,35 @@ Welcome to the Battle Results Flask application documentation. This documentatio
    - Instructions for setting up the development environment
    - Running the application locally
 
-2. [API Documentation](api.md)
+2. [Dependencies](dependencies.md)
+   - How Pipenv, Pipfile and Pipfile.lock work together
+   - What each package does and where it is used
+   - Adding, removing and updating packages
+   - How dependencies are handled inside Docker
+
+3. [API Documentation](api.md)
    - Endpoint descriptions
    - Request and response formats
    - Example usage
 
-3. [Docker Guide](docker.md)
+4. [Docker Guide](docker.md)
    - How the project is containerized (Dockerfile and docker-compose.yml explained)
    - All Docker and Compose commands
    - Environment variables and data persistence
    - Production considerations and troubleshooting
 
-4. [Deployment Guide](deployment.md)
+5. [Deployment Guide](deployment.md)
    - Options for deploying the application
    - Considerations for production environments
    - Docker deployment (summary — see Docker Guide for details)
 
-5. [Best Practices](best_practices.md)
+6. [Best Practices](best_practices.md)
    - Code organization
    - Development workflows
    - Security considerations
    - Database management
 
-6. [Troubleshooting](git_venv_windows_fix.md)
+7. [Troubleshooting](git_venv_windows_fix.md)
    - Fixing Git issues on Windows
    - Virtual environment troubleshooting
 
