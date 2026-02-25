@@ -23,23 +23,53 @@ REST API and minimal web UI for tracking game battle results, built with Flask a
 
 ## Running the Project
 
+Dependencies are managed with **Pipenv**, which creates an isolated virtual environment automatically. Nothing is installed globally.
+
+**1. Install Pipenv** *(once, globally)*
+
 ```bash
 pip install pipenv
-pipenv install
-pipenv shell
+```
+
+> On Windows, `pipenv` may not be available as a bare command after installation. Use `python -m pipenv` as a drop-in replacement for all commands below if that happens.
+
+**2. Create the virtual environment and install dependencies**
+
+```bash
+python -m pipenv install
+```
+
+This creates a `.venv` inside the project and installs all packages from `Pipfile.lock` into it.
+
+**3. Configure environment variables**
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and set `FLASK_SECRET_KEY` to a strong random value. If not set, a temporary key is auto-generated and sessions won't survive restarts. Generate one with:
+
+```bash
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+**4. Activate the virtual environment and run**
+
+```bash
+python -m pipenv shell       # activates the venv in a new subshell
 python app.py
+```
+
+Or run without activating the shell:
+
+```bash
+python -m pipenv run python app.py
 ```
 
 Open [http://localhost:8080](http://localhost:8080) to view the web UI.  
 API docs are at [http://localhost:8080/api/docs](http://localhost:8080/api/docs).
 
-A `FLASK_SECRET_KEY` env var is recommended. If not set, a temporary key is auto-generated (sessions won't survive restarts):
-
-```bash
-cp .env.example .env   # then set FLASK_SECRET_KEY in .env
-# or generate a key inline:
-python -c "import secrets; print(secrets.token_hex(32))"
-```
+> To exit the virtual environment shell, run `exit`.
 
 ## Docker
 
