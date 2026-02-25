@@ -42,6 +42,8 @@ python -c "import secrets; print(secrets.token_hex(32))"
 
 ## Docker
 
+Use Docker when you want to run the app without installing Python or Pipenv locally, or when deploying to a server or CI environment. The container bundles all dependencies and runs the app in an isolated, reproducible environment.
+
 ```bash
 # Set the secret key, then build and start
 export FLASK_SECRET_KEY=$(python -c "import secrets; print(secrets.token_hex(32))")
