@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Python 3.6 or higher
+- Python 3.13+
 - SQLite
 - Pipenv
 

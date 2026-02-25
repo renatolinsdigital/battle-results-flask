@@ -37,7 +37,7 @@ The application ships with a `Dockerfile` and a `docker-compose.yml` so it can b
 
 | Tool | Minimum version | Notes |
 |---|---|---|
-| Docker | 20.10+ | [Install Docker](https://docs.docker.com/get-docker/) |
+| Docker | 24.0+ | [Install Docker](https://docs.docker.com/get-docker/) |
 | Docker Compose | v2 (plugin) | Bundled with Docker Desktop; use `docker compose` (no hyphen) |
 
 Verify your installation:
@@ -60,7 +60,7 @@ battle-results-flask/
 
 The Dockerfile uses a multi-step approach within a single stage:
 
-1. **Base image** – `python:3.12-slim` keeps the image small while providing a compatible Python version.
+1. **Base image** – `python:3.13-slim` keeps the image small while providing a compatible Python version.
 2. **System dependencies** – `gcc` and `libffi-dev` are installed and then the apt cache is cleaned to minimize the image layer size.
 3. **Pipenv install** – `pipenv install --system --deploy` installs all locked dependencies directly into the system Python (no virtualenv inside the container).
 4. **Application copy** – The full project is copied after dependencies so that code changes don't invalidate the dependency cache layer.

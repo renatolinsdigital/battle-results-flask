@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 flask = "*"
-flask-cors = "*"
 flask-sqlalchemy = "*"
 flask-assets = "*"
 jsmin = "*"
@@ -13,8 +12,6 @@ python-dotenv = "*"
 cssmin = "*"
 libsass = "*"
 flask-swagger-ui = "*"
-apispec = "*"
-marshmallow = "*"
 
 [dev-packages]
 autopep8 = "*"
@@ -23,4 +20,4 @@ pytest-flask = "*"
 coverage = "*"
 
 [requires]
-python_version = "3.12"
+python_version = "3.13"

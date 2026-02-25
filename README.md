@@ -6,7 +6,7 @@ REST API and minimal web UI for tracking game battle results, built with Flask a
 
 ## Main Stack
 
-- **Python 3.12** — Backend runtime
+- **Python 3.13** — Backend runtime
 - **Flask** — Web framework handling routing, request lifecycle and WSGI serving
 - **SQLAlchemy** — ORM backed by SQLite; database and tables are created automatically on first run
 - **Jinja2** — Server-side HTML templating for the web UI
@@ -18,6 +18,7 @@ REST API and minimal web UI for tracking game battle results, built with Flask a
 - **Flask-Assets** — Asset pipeline: compiles SASS to CSS and bundles JS/CSS for the browser
 - **Swagger UI** — Interactive API documentation served at `/api/docs`, driven by `static/swagger.json`
 - **unittest** — Standard-library test framework used for API and view tests
+- **pytest** — Used alongside unittest for view tests
 - **coverage** — Test coverage reporting
 
 ## Running the Project
